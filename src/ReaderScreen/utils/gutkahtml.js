@@ -68,6 +68,11 @@ const htmlTemplate = (backColor, fontFace, content, isNightMode, savePosition) =
     .right{
       text-align:right
     }
+    .autopilot-now{
+      background: ${isNightMode ? "rgba(222,187,10,0.26)" : "rgba(222,187,10,0.22)"};
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
   </style>
   <script>${script(isNightMode, savePosition)}</script>
 </head>

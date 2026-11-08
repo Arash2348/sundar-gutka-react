@@ -17,6 +17,7 @@ import { Header, AutoScrollComponent } from "./components";
 import { useBookmarks, useFetchShabad } from "./hooks";
 import { styles, nightColors } from "./styles";
 import { loadHTML } from "./utils";
+import { useAutopilotControl, AutopilotStatus } from "../autopilot";
 
 const Reader = ({ navigation, route }) => {
   logMessage(constant.READER);
@@ -46,6 +47,7 @@ const Reader = ({ navigation, route }) => {
   const [shouldNavigateBack, setShouldNavigateBack] = useState(false);
   const [dateKey, setDateKey] = useState(Date.now().toString());
   const positionPointer = useRef(0);
+  const autopilot = useAutopilotControl({ navigation, webViewRef, baniId: id, isParagraphMode });
 
   const dispatch = useDispatch();
   const { shabad, isLoading } = useFetchShabad(id);
@@ -223,6 +225,8 @@ const Reader = ({ navigation, route }) => {
         handleBookmarkPress={handleBookmarkPress}
         handleSettingsPress={handleSettingsPress}
         isHeader={isHeader}
+        isAutopilot={autopilot.on}
+        handleAutopilotPress={autopilot.toggle}
       />
       {isLoading && <ActivityIndicator size="small" color={READER_STATUS_BAR_COLOR} />}
       <WebView
@@ -246,7 +250,8 @@ const Reader = ({ navigation, route }) => {
         onMessage={handleMessage}
       />
 
-      {isAutoScroll && (
+      <AutopilotStatus status={autopilot.status} progress={autopilot.progress} />
+      {isAutoScroll && !autopilot.on && (
         <AutoScrollComponent shabadID={id} webViewRef={webViewRef} isFooter={isHeader} />
       )}
     </SafeArea>

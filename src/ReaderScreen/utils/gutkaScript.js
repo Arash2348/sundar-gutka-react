@@ -14,6 +14,8 @@ let holdTimer;
 let curPosition = 0;
 let isScrolling;
 let isManuallyScrolling = false;
+let lastTouch = 0; // Autopilot does not scroll for a few seconds after the reader touches the page
+let autopilotScroll = 0; // ...and its own scrolling does not hide the header
 
 const clearScrollTimeout=()=> {
   if (autoScrollTimeout != null) {
@@ -32,7 +34,7 @@ const scrollFunc=(e)=> {
   if (typeof scrollFunc.y == "undefined") {
     scrollFunc.y = window.pageYOffset;
   }
-  if (autoScrollSpeed == 0) {
+  if (autoScrollSpeed == 0 && Date.now() - autopilotScroll > 1000) {
     let diffY = scrollFunc.y - window.pageYOffset;
     if (diffY < 0) {
       // Scroll down
@@ -155,6 +157,7 @@ window.addEventListener("touchstart", ()=> {
 });
 window.addEventListener("touchmove", ()=> {
   isManuallyScrolling = true;
+  lastTouch = Date.now();
   dragging = true;
 });
 
@@ -174,6 +177,18 @@ ${listener}.addEventListener(
       location.hash = "#" + message.bookmark;
       window.ReactNativeWebView.postMessage("hide");
     } 
+    if (message.hasOwnProperty("autopilot")) {
+      const prev = document.querySelector(".autopilot-now");
+      if (prev) prev.classList.remove("autopilot-now");
+      const el = message.autopilot && document.getElementById(message.autopilot);
+      if (el) {
+        el.classList.add("autopilot-now");
+        if (!isManuallyScrolling && Date.now() - lastTouch > 6000) {
+          autopilotScroll = Date.now();
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }
+    }
     if (message.hasOwnProperty("autoScroll")) {
       autoScrollSpeed = message.autoScroll;
       scrollMultiplier = message.scrollMultiplier;

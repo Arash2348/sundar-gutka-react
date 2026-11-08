@@ -4,9 +4,18 @@ import { Icon } from "@rneui/themed";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import colors from "@common/colors";
+import { STRINGS } from "@common";
 import { getHeaderStyles, styles } from "../styles/styles";
 
-const Header = ({ title, handleBackPress, handleBookmarkPress, handleSettingsPress, isHeader }) => {
+const Header = ({
+  title,
+  handleBackPress,
+  handleBookmarkPress,
+  handleSettingsPress,
+  isHeader,
+  isAutopilot,
+  handleAutopilotPress = null,
+}) => {
   const isNightMode = useSelector((state) => state.isNightMode);
   const isDatabaseUpdateAvailable = useSelector((state) => state.isDatabaseUpdateAvaliable);
   const getHeaderStyle = getHeaderStyles(isNightMode);
@@ -25,6 +34,17 @@ const Header = ({ title, handleBackPress, handleBookmarkPress, handleSettingsPre
 
   const headerRight = () => (
     <View style={{ flexDirection: "row" }}>
+      {handleAutopilotPress && (
+        <Icon
+          name="hearing"
+          color={isAutopilot ? colors.TOOLBAR_COLOR_ALT : colors.TOOLBAR_TINT}
+          size={30}
+          onPress={handleAutopilotPress}
+          accessibilityRole="button"
+          accessibilityLabel={STRINGS.AUTOPILOT}
+          accessibilityState={{ selected: isAutopilot }}
+        />
+      )}
       <Icon name="bookmark" color={colors.TOOLBAR_TINT} size={30} onPress={handleBookmarkPress} />
       <Icon
         name={isDatabaseUpdateAvailable ? "settings-suggest" : "settings"}
@@ -98,5 +118,8 @@ Header.propTypes = {
   handleBookmarkPress: PropTypes.func.isRequired,
   handleSettingsPress: PropTypes.func.isRequired,
   isHeader: PropTypes.bool.isRequired,
+  isAutopilot: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/require-default-props -- defaults to null (no Autopilot button)
+  handleAutopilotPress: PropTypes.func,
 };
 export default Header;

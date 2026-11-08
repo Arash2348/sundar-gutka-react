@@ -1,0 +1,52 @@
+diff --git a/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m b/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
+index a6f2317..91cc028 100644
+--- a/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
++++ b/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
+@@ -28,12 +28,15 @@ RCT_EXPORT_METHOD(start) {
+     // Apple recommended:
+     // Instead of setting your category and mode properties independently, set them at the same time
+     if (@available(iOS 10.0, *)) {
++        // Sundar Gutka Autopilot: plain capture (no call-style voice processing, which weakens
++        // kirtan), other audio is not ducked, and app sounds still play from the speaker.
+         success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord
+-                                       mode: AVAudioSessionModeVoiceChat
+-                                    options: AVAudioSessionCategoryOptionDuckOthers |
+-                                             AVAudioSessionCategoryOptionAllowBluetooth |
+-                                             AVAudioSessionCategoryOptionAllowAirPlay
++                                       mode: AVAudioSessionModeDefault
++                                    options: AVAudioSessionCategoryOptionMixWithOthers |
++                                             AVAudioSessionCategoryOptionDefaultToSpeaker |
++                                             AVAudioSessionCategoryOptionAllowBluetooth
+                                       error: &error];
++        success = [audioSession setActive: YES error: &error] && success;
+     } else {
+         success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord withOptions: AVAudioSessionCategoryOptionDuckOthers error: &error];
+         success = [audioSession setMode: AVAudioSessionModeVoiceChat error: &error] && success;
+@@ -43,8 +46,6 @@ RCT_EXPORT_METHOD(start) {
+         return;
+     }
+ 
+-    _recordState.mIsRunning = true;
+-
+     OSStatus status = AudioQueueNewInput(&_recordState.mDataFormat, HandleInputBuffer, &_recordState, NULL, NULL, 0, &_recordState.mQueue);
+     if (status != 0) {
+         RCTLog(@"[RNLiveAudioStream] Record Failed. Cannot initialize AudioQueueNewInput. status: %i", (int) status);
+@@ -55,6 +56,7 @@ RCT_EXPORT_METHOD(start) {
+         AudioQueueAllocateBuffer(_recordState.mQueue, _recordState.bufferByteSize, &_recordState.mBuffers[i]);
+         AudioQueueEnqueueBuffer(_recordState.mQueue, _recordState.mBuffers[i], 0, NULL);
+     }
++    _recordState.mIsRunning = true; // only once the queue exists, so stop() never disposes nothing
+     AudioQueueStart(_recordState.mQueue, NULL);
+ }
+ 
+@@ -67,6 +69,10 @@ RCT_EXPORT_METHOD(stop) {
+             AudioQueueFreeBuffer(_recordState.mQueue, _recordState.mBuffers[i]);
+         }
+         AudioQueueDispose(_recordState.mQueue, true);
++        // Give the audio session back: the app's own default, other apps' audio un-ducked.
++        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
++        [audioSession setActive: NO withOptions: AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error: nil];
++        [audioSession setCategory: AVAudioSessionCategorySoloAmbient error: nil];
+     }
+ }
+ 
