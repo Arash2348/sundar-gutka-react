@@ -179,9 +179,11 @@ ${listener}.addEventListener(
     } 
     if (message.hasOwnProperty("autopilot")) {
       const prev = document.querySelector(".autopilot-now");
-      if (prev) prev.classList.remove("autopilot-now");
-      const el = message.autopilot && document.getElementById(message.autopilot);
-      if (el) {
+      const row = message.autopilot && document.getElementById(message.autopilot);
+      // Only the Gurmukhi line is marked and centred; its translations stay below it as they are.
+      const el = row && (row.querySelector(".gurmukhi") || row);
+      if (prev && prev !== el) prev.classList.remove("autopilot-now");
+      if (el && el !== prev) {
         el.classList.add("autopilot-now");
         if (!isManuallyScrolling && Date.now() - lastTouch > 6000) {
           autopilotScroll = Date.now();

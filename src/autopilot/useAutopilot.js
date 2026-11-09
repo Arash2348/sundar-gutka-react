@@ -25,6 +25,11 @@ const SR = 16000;
 const MAX_BACKLOG = SR; // never fall more than 1 s behind the room
 const SILENT_S = 4; // this long with no sound at all: the microphone is off or blocked
 
+// Phone Paath profile: talk (English, announcements) heard as short Gurmukhi fragments must never move
+// the highlight. A window has to hear at least 7 letters and match at least 0.45 per letter to count:
+// 0 of 178 English windows pass (40 did before), Paath right-pangti time 98.7% -> 98.3%, lag unchanged.
+const PAATH = { minHyp: 7, minScore: 0.45 };
+
 let inferPromise = null; // the model session while Autopilot is on
 let download = null; // { promise, cancel, onProgress } while the model is downloading
 
@@ -259,7 +264,12 @@ const useAutopilot = (on, baniId, length, isParagraphMode, onRow) => {
           if (l.paragraph !== para) [para, paraId] = [l.paragraph, l.verseId];
           shownAs[l.verseId] = isParagraphMode ? paraId : l.verseId;
         });
-        follower = new FollowerV2(infer, lines, { baniId: bani, background, inputSr: SR });
+        follower = new FollowerV2(infer, lines, {
+          baniId: bani,
+          background,
+          inputSr: SR,
+          ...PAATH,
+        });
         stopSource =
           __DEV__ && (await RNFS.exists(TEST_WAV)) ? playTestWav(onData) : startMic(onData);
         if (!live) {
