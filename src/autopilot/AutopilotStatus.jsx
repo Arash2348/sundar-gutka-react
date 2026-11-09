@@ -1,7 +1,7 @@
 // Autopilot's one line of status (download progress, listening, microphone off), shown at the bottom
 // of the Reader until a pangti is being followed; then it gets out of the way.
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { Linking, StyleSheet, Text } from "react-native";
 import PropTypes from "prop-types";
 import { colors, STRINGS } from "@common";
 
@@ -40,7 +40,13 @@ const label = (status, progress) => {
 const AutopilotStatus = ({ status, progress }) => {
   const text = label(status, progress);
   return text ? (
-    <Text style={styles.pill} accessibilityLiveRegion={status === "loading" ? "none" : "polite"}>
+    <Text
+      style={styles.pill}
+      accessibilityLiveRegion={status === "loading" ? "none" : "polite"}
+      // microphone off: a tap opens Settings (the only way back on iOS once access was refused)
+      onPress={status === "mic" ? () => Linking.openSettings() : undefined}
+      accessibilityRole={status === "mic" ? "button" : "text"}
+    >
       {text}
     </Text>
   ) : null;

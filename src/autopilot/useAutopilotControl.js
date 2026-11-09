@@ -5,7 +5,7 @@
 //  - turns off when the Reader is left or the app goes to the background
 //  - pauses the Reader's Auto Scroll while on
 //  - tells the reader's page which pangti to show
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Alert, AppState, Linking } from "react-native";
 import { useSelector } from "react-redux";
 import DeviceInfo from "react-native-device-info";
@@ -24,23 +24,35 @@ const useAutopilotControl = ({ navigation, webViewRef, baniId, isParagraphMode }
     [webViewRef]
   );
 
-  const toggle = useCallback(async () => {
-    if (on) {
-      setOn(false);
-    } else if (!(await micAllowed())) {
+  const busy = useRef(false); // a second tap while a dialog is on its way does nothing
+  const start = useCallback(async () => {
+    if (await micAllowed()) setOn(true);
+    else {
       Alert.alert(STRINGS.AUTOPILOT, STRINGS.AUTOPILOT_MIC_PERMISSION, [
         { text: STRINGS.cancel, style: "cancel" },
         { text: STRINGS.openSettings, onPress: () => Linking.openSettings() },
       ]);
-    } else if (await modelReady()) {
-      setOn(true);
-    } else {
-      Alert.alert(STRINGS.AUTOPILOT, STRINGS.AUTOPILOT_DOWNLOAD, [
-        { text: STRINGS.cancel, style: "cancel" },
-        { text: STRINGS.startDownload, onPress: () => setOn(true) },
-      ]);
     }
-  }, [on]);
+  }, []);
+
+  const toggle = useCallback(async () => {
+    if (on) return setOn(false);
+    if (busy.current) return undefined;
+    busy.current = true;
+    try {
+      // the first time, explain (and ask before the download) before the phone asks for the microphone
+      if (await modelReady()) await start();
+      else {
+        Alert.alert(STRINGS.AUTOPILOT, STRINGS.AUTOPILOT_DOWNLOAD, [
+          { text: STRINGS.cancel, style: "cancel" },
+          { text: STRINGS.startDownload, onPress: start },
+        ]);
+      }
+    } finally {
+      busy.current = false;
+    }
+    return undefined;
+  }, [on, start]);
 
   useEffect(() => navigation.addListener("blur", () => setOn(false)), [navigation]);
   useEffect(() => {
