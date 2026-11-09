@@ -36,10 +36,12 @@ class Infer {
 
   static async create(modelPath) {
     const ort = require("onnxruntime-react-native"); // eslint-disable-line global-require
-    // One thread: a phone keeps up with room to spare (about 0.1 s per 4 s window on a recent
-    // phone core) and the rest of the phone stays cool.
+    // Android: two threads halve each pass on mid-range phones (emulator 235 -> 122 ms per 4 s
+    // window), so they listen every 0.25 s instead of 0.5 s. iPhones already take ~0.09 s on one
+    // core; a second thread there would only add battery use.
+    const { Platform } = require("react-native"); // eslint-disable-line global-require
     const sess = await ort.InferenceSession.create(modelPath, {
-      intraOpNumThreads: 1,
+      intraOpNumThreads: Platform.OS === "android" ? 2 : 1,
       interOpNumThreads: 1,
       enableCpuMemArena: false, // no pooled buffers kept between passes: far less memory held
       enableMemPattern: false,
