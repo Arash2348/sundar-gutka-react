@@ -6,7 +6,7 @@
 //  - pauses the Reader's Auto Scroll while on
 //  - tells the reader's page which pangti to show
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Alert, AppState } from "react-native";
+import { Alert, AppState, Linking } from "react-native";
 import { useSelector } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import { STRINGS } from "@common";
@@ -28,7 +28,10 @@ const useAutopilotControl = ({ navigation, webViewRef, baniId, isParagraphMode }
     if (on) {
       setOn(false);
     } else if (!(await micAllowed())) {
-      setOn(true); // shows "Microphone is off"
+      Alert.alert(STRINGS.AUTOPILOT, STRINGS.AUTOPILOT_MIC_OFF, [
+        { text: STRINGS.cancel, style: "cancel" },
+        { text: STRINGS.openSettings, onPress: () => Linking.openSettings() },
+      ]);
     } else if (await modelReady()) {
       setOn(true);
     } else {

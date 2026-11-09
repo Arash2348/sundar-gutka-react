@@ -86,6 +86,11 @@ const ensureModel = async (onProgress) => {
 
 // Asked before Autopilot switches on: on Android the permission dialog pauses the app, which reads as
 // going to the background and would otherwise switch Autopilot straight off again.
+// Inside the running effect only checked (never asked again: a second dialog would pause the app).
+const micGranted = async () =>
+  Platform.OS !== "android" ||
+  PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+
 export const micAllowed = async () => {
   if (Platform.OS !== "android") return true; // iOS asks on first recording; silence is caught below
   const r = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
@@ -226,7 +231,7 @@ const useAutopilot = (on, baniId, length, isParagraphMode, onRow) => {
     (async () => {
       try {
         setStatus("loading");
-        if (!(await micAllowed())) {
+        if (!(await micGranted())) {
           if (live) setStatus("mic");
           return;
         }
