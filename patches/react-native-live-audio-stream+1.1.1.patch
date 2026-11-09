@@ -1,5 +1,97 @@
+diff --git a/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java b/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java
+index 20f454f..8c0ef25 100644
+--- a/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java
++++ b/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java
+@@ -27,7 +27,10 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
+ 
+     private AudioRecord recorder;
+     private int bufferSize;
+-    private boolean isRecording;
++    // Sundar Gutka Autopilot: each recording has its own token, thread and recorder, so a quick
++    // stop + start never leaves an old recorder running or two threads reading.
++    private volatile Object recording;
++    private Thread recordingThread;
+ 
+     public RNLiveAudioStreamModule(ReactApplicationContext reactContext) {
+         super(reactContext);
+@@ -65,7 +68,7 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
+             audioSource = options.getInt("audioSource");
+         }
+ 
+-        isRecording = false;
++        stopRecording();
+         eventEmitter = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
+ 
+         bufferSize = AudioRecord.getMinBufferSize(sampleRateInHz, channelConfig, audioFormat);
+@@ -80,29 +83,37 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
+ 
+     @ReactMethod
+     public void start() {
+-        isRecording = true;
+-        recorder.startRecording();
++        final AudioRecord rec = recorder;
++        recorder = null; // owned by this recording's thread from here on
++        if (rec == null || rec.getState() != AudioRecord.STATE_INITIALIZED) {
++            if (rec != null) rec.release();
++            return;
++        }
++        final Object token = new Object();
++        recording = token;
++        rec.startRecording();
+ 
+-        Thread recordingThread = new Thread(new Runnable() {
++        recordingThread = new Thread(new Runnable() {
+             public void run() {
+                 try {
+                     int bytesRead;
+                     int count = 0;
+-                    String base64Data;
+                     byte[] buffer = new byte[bufferSize];
+ 
+-                    while (isRecording) {
+-                        bytesRead = recorder.read(buffer, 0, buffer.length);
++                    while (recording == token) {
++                        bytesRead = rec.read(buffer, 0, buffer.length);
++                        if (bytesRead < 0) break; // audio error: stop instead of spinning
+ 
+                         // skip first 2 buffers to eliminate "click sound"
+                         if (bytesRead > 0 && ++count > 2) {
+-                            base64Data = Base64.encodeToString(buffer, Base64.NO_WRAP);
+-                            eventEmitter.emit("data", base64Data);
++                            eventEmitter.emit("data", Base64.encodeToString(buffer, 0, bytesRead, Base64.NO_WRAP));
+                         }
+                     }
+-                    recorder.stop();
+                 } catch (Exception e) {
+                     e.printStackTrace();
++                } finally {
++                    try { rec.stop(); } catch (Exception e) { /* already stopped */ }
++                    rec.release();
+                 }
+             }
+         });
+@@ -110,8 +121,18 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
+         recordingThread.start();
+     }
+ 
++    private void stopRecording() {
++        recording = null;
++        Thread t = recordingThread;
++        recordingThread = null;
++        if (t != null) {
++            try { t.join(500); } catch (InterruptedException e) { /* give up waiting */ }
++        }
++    }
++
+     @ReactMethod
+     public void stop(Promise promise) {
+-        isRecording = false;
++        stopRecording();
++        if (promise != null) promise.resolve(null);
+     }
+ }
 diff --git a/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m b/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
-index a6f2317..91cc028 100644
+index a6f2317..07f6edd 100644
 --- a/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
 +++ b/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
 @@ -28,12 +28,15 @@ RCT_EXPORT_METHOD(start) {
@@ -16,7 +108,7 @@ index a6f2317..91cc028 100644
 +                                       mode: AVAudioSessionModeDefault
 +                                    options: AVAudioSessionCategoryOptionMixWithOthers |
 +                                             AVAudioSessionCategoryOptionDefaultToSpeaker |
-+                                             AVAudioSessionCategoryOptionAllowBluetooth
++                                             AVAudioSessionCategoryOptionAllowBluetoothA2DP
                                        error: &error];
 +        success = [audioSession setActive: YES error: &error] && success;
      } else {

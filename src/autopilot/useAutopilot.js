@@ -17,8 +17,10 @@ const MODEL_URL =
   "https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/5fd2e89e3a43d31f47b0fb55fdce5ed50a91283f/model.int8.onnx";
 const MODEL_BYTES = 184311219;
 const MODEL_SHA256 = "5f9e41d867dee2883796e290eef85abc11cbd32fe0f10c1f763a638d824634f9";
-// Caches: re-downloadable, so never in the user's iCloud backup.
-const MODEL_PATH = `${RNFS.CachesDirectoryPath}/autopilot-model.int8.onnx`;
+// iOS: Caches, so it is never in the user's iCloud backup. Android: the app's own files (backup is off
+// there), which the system does not purge the way it clears caches on a full phone.
+const MODEL_DIR = Platform.OS === "ios" ? RNFS.CachesDirectoryPath : RNFS.DocumentDirectoryPath;
+const MODEL_PATH = `${MODEL_DIR}/autopilot-model.int8.onnx`;
 const SR = 16000;
 const MAX_BACKLOG = SR; // never fall more than 1 s behind the room
 const SILENT_S = 4; // this long with no sound at all: the microphone is off or blocked
@@ -33,7 +35,7 @@ const ensureModel = async (onProgress) => {
   if (await modelReady()) return;
   if (!download) {
     // Partial files of attempts the app or phone ended are cleared before a new one.
-    const old = await RNFS.readDir(RNFS.CachesDirectoryPath).catch(() => []);
+    const old = await RNFS.readDir(MODEL_DIR).catch(() => []);
     await Promise.all(
       old
         .filter((f) => f.name.startsWith("autopilot-model") && f.name.endsWith(".part"))
@@ -82,7 +84,9 @@ const ensureModel = async (onProgress) => {
   await download.promise;
 };
 
-const micAllowed = async () => {
+// Asked before Autopilot switches on: on Android the permission dialog pauses the app, which reads as
+// going to the background and would otherwise switch Autopilot straight off again.
+export const micAllowed = async () => {
   if (Platform.OS !== "android") return true; // iOS asks on first recording; silence is caught below
   const r = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
   return r === PermissionsAndroid.RESULTS.GRANTED;
@@ -226,6 +230,7 @@ const useAutopilot = (on, baniId, length, isParagraphMode, onRow) => {
           if (live) setStatus("mic");
           return;
         }
+        activateKeepAwake(); // the screen stays on (a locked phone would stop the download)
         await ensureModel((p) => live && setProgress(p));
         if (!live) return;
         // The engine loads on first use only: none of it runs for anyone who never taps Autopilot.
@@ -260,7 +265,6 @@ const useAutopilot = (on, baniId, length, isParagraphMode, onRow) => {
         watchdog = setInterval(() => {
           if (Date.now() - lastData > SILENT_S * 1000) showMic(true);
         }, 1000);
-        activateKeepAwake(); // the screen stays on while following
         setStatus("listening");
       } catch (e) {
         logError(e);

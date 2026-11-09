@@ -10,7 +10,7 @@ import { Alert, AppState } from "react-native";
 import { useSelector } from "react-redux";
 import DeviceInfo from "react-native-device-info";
 import { STRINGS } from "@common";
-import useAutopilot, { modelReady } from "./useAutopilot";
+import useAutopilot, { micAllowed, modelReady } from "./useAutopilot";
 
 // Phones sold with 3 GB report about 2.6-2.9 GB; tested on a 2.5 GB Android emulator.
 const MIN_MEMORY = 2.5e9;
@@ -27,6 +27,8 @@ const useAutopilotControl = ({ navigation, webViewRef, baniId, isParagraphMode }
   const toggle = useCallback(async () => {
     if (on) {
       setOn(false);
+    } else if (!(await micAllowed())) {
+      setOn(true); // shows "Microphone is off"
     } else if (await modelReady()) {
       setOn(true);
     } else {
