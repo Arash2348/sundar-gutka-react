@@ -28,7 +28,7 @@ const useAutopilotControl = ({ navigation, webViewRef, baniId, isParagraphMode }
     if (on) {
       setOn(false);
     } else if (!(await micAllowed())) {
-      Alert.alert(STRINGS.AUTOPILOT, STRINGS.AUTOPILOT_MIC_OFF, [
+      Alert.alert(STRINGS.AUTOPILOT, STRINGS.AUTOPILOT_MIC_PERMISSION, [
         { text: STRINGS.cancel, style: "cancel" },
         { text: STRINGS.openSettings, onPress: () => Linking.openSettings() },
       ]);

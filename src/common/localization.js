@@ -17,7 +17,8 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT: "Autopilot",
     AUTOPILOT_LISTENING: "Listening…",
     AUTOPILOT_UNAVAILABLE: "Autopilot unavailable",
-    AUTOPILOT_MIC_OFF: "Microphone permission needed",
+    AUTOPILOT_MIC_OFF: "Microphone not available",
+    AUTOPILOT_MIC_PERMISSION: "Microphone permission needed",
     AUTOPILOT_DOWNLOAD:
       "Follows along as you read Paath and keeps your place. Made for Paath, not Kirtan. It needs a one-time 176 MB download (Wi-Fi recommended). Audio is never saved or sent anywhere.",
     bani_length: "Bani Length",
@@ -164,9 +165,10 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT: "ऑटोपायलट",
     AUTOPILOT_LISTENING: "सुन रहा है…",
     AUTOPILOT_UNAVAILABLE: "ऑटोपायलट उपलब्ध नहीं",
-    AUTOPILOT_MIC_OFF: "माइक्रोफ़ोन की अनुमति चाहिए",
+    AUTOPILOT_MIC_OFF: "माइक्रोफ़ोन उपलब्ध नहीं है",
+    AUTOPILOT_MIC_PERMISSION: "माइक्रोफ़ोन की अनुमति चाहिए",
     AUTOPILOT_DOWNLOAD:
-      "पाठ करते समय साथ चलता है और आप जिस पंक्ति पर हैं, वह दिखाता रहता है। यह पाठ के लिए है, कीर्तन के लिए नहीं। इसके लिए एक बार 176 MB डाउनलोड चाहिए (Wi-Fi पर करें)। आवाज़ न कभी सेव होती है, न कहीं भेजी जाती है।",
+      "पाठ करते समय साथ चलता है और आप जिस पंक्ति पर हैं, वह दिखाता रहता है। यह पाठ के लिए है, कीर्तन के लिए नहीं। इसके लिए एक बार 176 MB डाउनलोड चाहिए (Wi-Fi बेहतर)। आवाज़ न कभी सेव होती है, न कहीं भेजी जाती है।",
     bani_length: "बाणी लंबाई",
     bani_length_alert_1:
       "पिछले कुछ सदियों में, कई सम्प्रदायें और संगठन पैदा हुई हैं, जो सिख सिद्धांत और गुरुमत पर केंद्रित हैं। हालांकि इन संप्रदायों में सिख इतिहास, गुरबानी और अनुपालन पर मतभेद रहे हैं, पर वे पूर्ण रूप से  खालसा पंथ का हिस्सा बने हुए हैं और उच्चतम अकाल तख्त के बैनर तले ही रह रहे हैं।",
@@ -275,7 +277,7 @@ const STRINGS = new LocalizedStrings({
     permissionTitle: "अधिसूचना अनुमति आवश्यक है",
     premissionDescription:
       "बानी रिमाइंडर अधिसूचना प्राप्त करने के लिए, कृपया उन्हें सेटिंग्स में सक्षम करें।",
-    openSettings: "खुली सेटिंग",
+    openSettings: "सेटिंग खोलें",
     databaseUpdate: "डेटाबेस अद्यतन",
     downloadSuccessful: "डाउनलोड सफल",
     downloadFailed: "डाउनलोड विफल! पुनः प्रयास करें",
@@ -312,7 +314,8 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT: "ਆਟੋਪਾਇਲਟ",
     AUTOPILOT_LISTENING: "ਸੁਣ ਰਿਹਾ ਹੈ…",
     AUTOPILOT_UNAVAILABLE: "ਆਟੋਪਾਇਲਟ ਉਪਲਬਧ ਨਹੀਂ",
-    AUTOPILOT_MIC_OFF: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਚਾਹੀਦੀ ਹੈ",
+    AUTOPILOT_MIC_OFF: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਉਪਲਬਧ ਨਹੀਂ",
+    AUTOPILOT_MIC_PERMISSION: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਚਾਹੀਦੀ ਹੈ",
     AUTOPILOT_DOWNLOAD:
       "ਪਾਠ ਕਰਦਿਆਂ ਨਾਲ ਚੱਲਦਾ ਹੈ ਅਤੇ ਜਿਸ ਪੰਗਤੀ 'ਤੇ ਤੁਸੀਂ ਹੋ, ਉਹ ਦਿਖਾਉਂਦਾ ਰਹਿੰਦਾ ਹੈ। ਇਹ ਪਾਠ ਲਈ ਹੈ, ਕੀਰਤਨ ਲਈ ਨਹੀਂ। ਇਸ ਲਈ ਇੱਕ ਵਾਰ 176 MB ਡਾਊਨਲੋਡ ਚਾਹੀਦਾ ਹੈ (Wi-Fi ਬਿਹਤਰ)। ਆਵਾਜ਼ ਨਾ ਕਦੇ ਸੇਵ ਹੁੰਦੀ ਹੈ, ਨਾ ਕਿਤੇ ਭੇਜੀ ਜਾਂਦੀ ਹੈ।",
     bani_length: "ਬਾਣੀ ਲੰਬਾਈ",
@@ -458,7 +461,8 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT: "Pilote automatique",
     AUTOPILOT_LISTENING: "Écoute…",
     AUTOPILOT_UNAVAILABLE: "Pilote automatique indisponible",
-    AUTOPILOT_MIC_OFF: "Autorisation du micro requise",
+    AUTOPILOT_MIC_OFF: "Micro indisponible",
+    AUTOPILOT_MIC_PERMISSION: "Autorisation du micro requise",
     AUTOPILOT_DOWNLOAD:
       "Suit votre lecture du Paath et garde votre place. Conçu pour le Paath, pas pour le Kirtan. Un téléchargement unique de 176 Mo est nécessaire (Wi-Fi recommandé). Le son n'est jamais conservé ni envoyé.",
     bani_length: "Longueur de Bani",
@@ -610,7 +614,8 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT: "Pilota automatico",
     AUTOPILOT_LISTENING: "In ascolto…",
     AUTOPILOT_UNAVAILABLE: "Pilota automatico non disponibile",
-    AUTOPILOT_MIC_OFF: "Serve il permesso del microfono",
+    AUTOPILOT_MIC_OFF: "Microfono non disponibile",
+    AUTOPILOT_MIC_PERMISSION: "Serve il permesso del microfono",
     AUTOPILOT_DOWNLOAD:
       "Segue la lettura del Paath e tiene il segno. Pensato per il Paath, non per il Kirtan. Serve un download unico di 176 MB (consigliato il Wi-Fi). L'audio non viene mai salvato né inviato.",
     bani_length: "Lunghezza delle Bani",
@@ -759,7 +764,8 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT: "Piloto automático",
     AUTOPILOT_LISTENING: "Escuchando…",
     AUTOPILOT_UNAVAILABLE: "Piloto automático no disponible",
-    AUTOPILOT_MIC_OFF: "Se necesita permiso del micrófono",
+    AUTOPILOT_MIC_OFF: "Micrófono no disponible",
+    AUTOPILOT_MIC_PERMISSION: "Se necesita permiso del micrófono",
     AUTOPILOT_DOWNLOAD:
       "Sigue tu lectura del Paath y no pierde tu lugar. Hecho para el Paath, no para el Kirtan. Necesita una descarga única de 176 MB (se recomienda Wi-Fi). El audio nunca se guarda ni se envía.",
     bani_length: "Largueza de las Bani",
@@ -871,7 +877,7 @@ const STRINGS = new LocalizedStrings({
     permissionTitle: "Se requiere permiso de notificación",
     premissionDescription:
       "Para recibir notificaciones de Bani Reminder, habilítelas en la configuración.",
-    openSettings: "Configuración abierta",
+    openSettings: "Abrir configuración",
     databaseUpdate: "Actualización de base de datos",
     downloadFailed: "¡Descarga fallida! Inténtalo de nuevo.",
     downloadSuccessful: "Descargar Exitosa",
