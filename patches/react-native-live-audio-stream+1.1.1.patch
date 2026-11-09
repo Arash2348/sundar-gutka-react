@@ -91,7 +91,7 @@ index 20f454f..8c0ef25 100644
      }
  }
 diff --git a/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m b/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
-index a6f2317..9b41c32 100644
+index a6f2317..7ccec1e 100644
 --- a/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
 +++ b/node_modules/react-native-live-audio-stream/ios/RNLiveAudioStream.m
 @@ -28,12 +28,15 @@ RCT_EXPORT_METHOD(start) {
@@ -114,7 +114,7 @@ index a6f2317..9b41c32 100644
      } else {
          success = [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord withOptions: AVAudioSessionCategoryOptionDuckOthers error: &error];
          success = [audioSession setMode: AVAudioSessionModeVoiceChat error: &error] && success;
-@@ -43,8 +46,6 @@ RCT_EXPORT_METHOD(start) {
+@@ -43,11 +46,12 @@ RCT_EXPORT_METHOD(start) {
          return;
      }
  
@@ -123,7 +123,13 @@ index a6f2317..9b41c32 100644
      OSStatus status = AudioQueueNewInput(&_recordState.mDataFormat, HandleInputBuffer, &_recordState, NULL, NULL, 0, &_recordState.mQueue);
      if (status != 0) {
          RCTLog(@"[RNLiveAudioStream] Record Failed. Cannot initialize AudioQueueNewInput. status: %i", (int) status);
-@@ -55,6 +56,7 @@ RCT_EXPORT_METHOD(start) {
++        // Hand the audio session back so the microphone indicator does not stay on.
++        [audioSession setActive: NO withOptions: AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error: nil];
++        [audioSession setCategory: AVAudioSessionCategorySoloAmbient error: nil];
+         return;
+     }
+ 
+@@ -55,6 +59,7 @@ RCT_EXPORT_METHOD(start) {
          AudioQueueAllocateBuffer(_recordState.mQueue, _recordState.bufferByteSize, &_recordState.mBuffers[i]);
          AudioQueueEnqueueBuffer(_recordState.mQueue, _recordState.mBuffers[i], 0, NULL);
      }
@@ -131,7 +137,7 @@ index a6f2317..9b41c32 100644
      AudioQueueStart(_recordState.mQueue, NULL);
  }
  
-@@ -67,6 +69,10 @@ RCT_EXPORT_METHOD(stop) {
+@@ -67,6 +72,10 @@ RCT_EXPORT_METHOD(stop) {
              AudioQueueFreeBuffer(_recordState.mQueue, _recordState.mBuffers[i]);
          }
          AudioQueueDispose(_recordState.mQueue, true);
