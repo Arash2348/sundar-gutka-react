@@ -1,6 +1,6 @@
 /* global __DEV__ */
 // Autopilot: listens while a Bani is read or sung and keeps its current pangti on screen.
-// The follower is the desktop STTM engine's Bani follower, unchanged (engine/follower2.js). It
+// The follower is the desktop STTM engine's Bani follower, unchanged (engine/follower.js, a copy of its follower2.js). It
 // compares what it hears with the pangtis exactly as the database gives them and answers with a
 // row of this Bani; the reader only scrolls to that row. Nothing is written to the database, and
 // audio never leaves the phone.
@@ -231,7 +231,7 @@ const useAutopilot = (on, baniId, length, isParagraphMode, onRow) => {
         // The engine loads on first use only: none of it runs for anyone who never taps Autopilot.
         /* eslint-disable global-require */
         const { Infer } = require("./engine/infer");
-        const { FollowerV2 } = require("./engine/follower2");
+        const { FollowerV2 } = require("./engine/follower");
         /* eslint-enable global-require */
         if (!inferPromise) inferPromise = Infer.create(MODEL_PATH);
         const infer = await inferPromise.catch(async (e) => {
