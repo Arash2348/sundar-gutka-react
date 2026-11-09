@@ -34,7 +34,7 @@ const scrollFunc=(e)=> {
   if (typeof scrollFunc.y == "undefined") {
     scrollFunc.y = window.pageYOffset;
   }
-  if (autoScrollSpeed == 0 && Date.now() - autopilotScroll > 1000) {
+  if (autoScrollSpeed == 0 && Date.now() - autopilotScroll > 2000) {
     let diffY = scrollFunc.y - window.pageYOffset;
     if (diffY < 0) {
       // Scroll down

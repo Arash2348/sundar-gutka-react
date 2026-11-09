@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java b/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java
-index 20f454f..8c0ef25 100644
+index 20f454f..a766a03 100644
 --- a/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java
 +++ b/node_modules/react-native-live-audio-stream/android/src/main/java/com/imxiqi/rnliveaudiostream/RNLiveAudioStreamModule.java
 @@ -27,7 +27,10 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
@@ -14,16 +14,19 @@ index 20f454f..8c0ef25 100644
  
      public RNLiveAudioStreamModule(ReactApplicationContext reactContext) {
          super(reactContext);
-@@ -65,7 +68,7 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
+@@ -65,7 +68,10 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
              audioSource = options.getInt("audioSource");
          }
  
 -        isRecording = false;
 +        stopRecording();
++        // a recorder made by an earlier init and never started is released here (a started one is
++        // released by its recording thread)
++        if (recorder != null && recorder.getRecordingState() != AudioRecord.RECORDSTATE_RECORDING) recorder.release();
          eventEmitter = reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class);
  
          bufferSize = AudioRecord.getMinBufferSize(sampleRateInHz, channelConfig, audioFormat);
-@@ -80,29 +83,37 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
+@@ -80,29 +86,37 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
  
      @ReactMethod
      public void start() {
@@ -70,7 +73,7 @@ index 20f454f..8c0ef25 100644
                  }
              }
          });
-@@ -110,8 +121,18 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
+@@ -110,8 +124,18 @@ public class RNLiveAudioStreamModule extends ReactContextBaseJavaModule {
          recordingThread.start();
      }
  
