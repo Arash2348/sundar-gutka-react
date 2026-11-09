@@ -36,7 +36,7 @@ const Header = ({
     <View style={{ flexDirection: "row" }}>
       {handleAutopilotPress && (
         <Icon
-          name="hearing"
+          name={isAutopilot ? "mic" : "mic-none"}
           color={isAutopilot ? colors.TOOLBAR_COLOR_ALT : colors.TOOLBAR_TINT}
           size={30}
           onPress={handleAutopilotPress}
