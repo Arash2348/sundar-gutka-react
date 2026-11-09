@@ -19,7 +19,7 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT_UNAVAILABLE: "Autopilot unavailable",
     AUTOPILOT_MIC_OFF: "Microphone is off",
     AUTOPILOT_DOWNLOAD:
-      "Listens as the Bani is read and keeps your place. It needs a one-time 176 MB download (Wi-Fi recommended). Audio is never recorded or saved.",
+      "Follows along as you read Paath and keeps your place. Made for Paath, not Kirtan. It needs a one-time 176 MB download (Wi-Fi recommended). Audio is never recorded or saved.",
     bani_length: "Bani Length",
     bani_length_alert_1:
       "Throughout the past few centuries, there have been many different “sampardhas” or “jathas” that have been conceived from the core concepts of Sikhi and Gurmat. These sampardhas often have different opinions and thoughts about some aspects of Sikh history, Gurbani and Rehat, but still fall collectively under the united Khalsa Panth and, most importantly, the Akaal Takht. The Akaal Takht is the highest order and institution that all Sikhs adhere to.",
@@ -166,7 +166,7 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT_UNAVAILABLE: "ऑटोपायलट उपलब्ध नहीं",
     AUTOPILOT_MIC_OFF: "माइक्रोफ़ोन बंद है",
     AUTOPILOT_DOWNLOAD:
-      "बाणी पढ़ते समय सुनकर आपकी जगह बनाए रखता है। इसके लिए एक बार 176 MB डाउनलोड चाहिए (Wi-Fi बेहतर)। आवाज़ कभी रिकॉर्ड या सेव नहीं होती।",
+      "पाठ पढ़ते समय साथ चलता है और आपकी जगह बनाए रखता है। यह पाठ के लिए है, कीर्तन के लिए नहीं। इसके लिए एक बार 176 MB डाउनलोड चाहिए (Wi-Fi बेहतर)। आवाज़ कभी रिकॉर्ड या सेव नहीं होती।",
     bani_length: "बाणी लंबाई",
     bani_length_alert_1:
       "पिछले कुछ सदियों में, कई सम्प्रदायें और संगठन पैदा हुई हैं, जो सिख सिद्धांत और गुरुमत पर केंद्रित हैं। हालांकि इन संप्रदायों में सिख इतिहास, गुरबानी और अनुपालन पर मतभेद रहे हैं, पर वे पूर्ण रूप से  खालसा पंथ का हिस्सा बने हुए हैं और उच्चतम अकाल तख्त के बैनर तले ही रह रहे हैं।",
@@ -314,7 +314,7 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT_UNAVAILABLE: "ਆਟੋਪਾਇਲਟ ਉਪਲਬਧ ਨਹੀਂ",
     AUTOPILOT_MIC_OFF: "ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਬੰਦ ਹੈ",
     AUTOPILOT_DOWNLOAD:
-      "ਬਾਣੀ ਪੜ੍ਹਦਿਆਂ ਸੁਣ ਕੇ ਤੁਹਾਡੀ ਥਾਂ ਨਾਲ ਰੱਖਦਾ ਹੈ। ਇਸ ਲਈ ਇੱਕ ਵਾਰ 176 MB ਡਾਊਨਲੋਡ ਚਾਹੀਦਾ ਹੈ (Wi-Fi ਬਿਹਤਰ)। ਆਵਾਜ਼ ਕਦੇ ਰਿਕਾਰਡ ਜਾਂ ਸੇਵ ਨਹੀਂ ਹੁੰਦੀ।",
+      "ਪਾਠ ਪੜ੍ਹਦਿਆਂ ਨਾਲ ਚੱਲਦਾ ਹੈ ਅਤੇ ਤੁਹਾਡੀ ਥਾਂ ਸੰਭਾਲਦਾ ਹੈ। ਇਹ ਪਾਠ ਲਈ ਹੈ, ਕੀਰਤਨ ਲਈ ਨਹੀਂ। ਇਸ ਲਈ ਇੱਕ ਵਾਰ 176 MB ਡਾਊਨਲੋਡ ਚਾਹੀਦਾ ਹੈ (Wi-Fi ਬਿਹਤਰ)। ਆਵਾਜ਼ ਕਦੇ ਰਿਕਾਰਡ ਜਾਂ ਸੇਵ ਨਹੀਂ ਹੁੰਦੀ।",
     bani_length: "ਬਾਣੀ ਲੰਬਾਈ",
     bani_length_alert_1:
       "ਬੀਤੀਆਂ ਕੁਝ ਸਦੀਆਂ ਦੌਰਾਨ ਅਨੇਕਾਂ ਅਜਿਹੀਆਂ ਸੰਪਰਦਾਵਾਂ ਤੇ ਜੱਥੇਬੰਦੀਆਂ ਪੈਦਾ ਹੋਈਆਂ ਜਿਨ੍ਹਾਂ ਦਾ ਧੁਰਾ ਸਿੱਖੀ ਸਿਧਾਂਤ ਅਤੇ ਗੁਰਮਤਿ ਰਿਹਾ। ਭਾਵੇਂ ਇਹਨਾਂ ਸੰਪਰਦਾਵਾਂ ਵਿੱਚ ਸਿੱਖ ਇਤਿਹਾਸ, ਗੁਰਬਾਣੀ ਅਤੇ ਰਹਿਤ ਨੂੰ ਲੈ ਕੇ ਆਪਸੀ ਮਤਭੇਦ ਰਹੇ ਹਨ, ਪਰ ਸਮੂਹ ਤੌਰ ਤੇ ਖਾਲਸਾ ਪੰਥ ਦੇ ਹਿੱਸੇ ਵਜੋਂ ਹੀ ਵਿਚਰੀਆਂ ਹਨ ਤੇ ਸੱਭ ਤੋਂ ਵੱਧ ਕੇ ਸਰਬ ਉੱਚ ਅਕਾਲ ਤਖਤ ਦੇ ਝੰਡੇ ਹੇਠ ਹੀ ਰਹੀਆਂ (ਰਹਿੰਦੀਆਂ) ਹਨ।",
@@ -460,7 +460,7 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT_UNAVAILABLE: "Pilote automatique indisponible",
     AUTOPILOT_MIC_OFF: "Le micro est coupé",
     AUTOPILOT_DOWNLOAD:
-      "Écoute la lecture de la Bani et garde votre place. Un téléchargement unique de 176 Mo est nécessaire (Wi-Fi recommandé). Le son n'est jamais enregistré ni conservé.",
+      "Suit votre lecture du Paath et garde votre place. Conçu pour le Paath, pas pour le Kirtan. Un téléchargement unique de 176 Mo est nécessaire (Wi-Fi recommandé). Le son n'est jamais enregistré ni conservé.",
     bani_length: "Longueur de Bani",
     bani_length_alert_1:
       "Au cours des derniers siècles, il y a eu de nombreux «sampardhas» ou «jathas» différents qui ont été conçus à partir des concepts fondamentaux du Sikhi et du Gurmat. Ces sampardhas ont souvent des opinions différentes sur certains aspects de l'histoire sikh, Gurbani et Rehat, mais relèvent toujours collectivement du Khalsa Panth uni et, plus important encore, de l'Akal Takht. L'Akaal Takht est l'ordre le plus élevé et est la plus haute institution à laquelle tous les Sikhs adhèrent.",
@@ -612,7 +612,7 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT_UNAVAILABLE: "Pilota automatico non disponibile",
     AUTOPILOT_MIC_OFF: "Il microfono è spento",
     AUTOPILOT_DOWNLOAD:
-      "Ascolta la lettura della Bani e tiene il segno. Serve un download unico di 176 MB (consigliato il Wi-Fi). L'audio non viene mai registrato né salvato.",
+      "Segue la lettura del Paath e tiene il segno. Pensato per il Paath, non per il Kirtan. Serve un download unico di 176 MB (consigliato il Wi-Fi). L'audio non viene mai registrato né salvato.",
     bani_length: "Lunghezza delle Bani",
     bani_length_alert_1:
       "Nel corso degli ultimi secoli, ci sono stati molti ”sampardhas” o ”jathas” diversi che sono stati concepiti dai concetti fondamentali di Sikhi e della Gurmat. Questi esempi hanno spesso opinioni e pensieri diversi su alcuni aspetti della storia dei Sikh, Gurbani e Rehat. Cadono ancora sotto l'unione di Khalsa Panth e, soprattutto, di Akaal Takht. L'Akaal Takht è il più alto ordine e istituzione a cui tutti i sikh aderiscono.",
@@ -761,7 +761,7 @@ const STRINGS = new LocalizedStrings({
     AUTOPILOT_UNAVAILABLE: "Piloto automático no disponible",
     AUTOPILOT_MIC_OFF: "El micrófono está apagado",
     AUTOPILOT_DOWNLOAD:
-      "Escucha la lectura de la Bani y mantiene tu lugar. Necesita una descarga única de 176 MB (se recomienda Wi-Fi). El audio nunca se graba ni se guarda.",
+      "Sigue tu lectura del Paath y mantiene tu lugar. Hecho para el Paath, no para el Kirtan. Necesita una descarga única de 176 MB (se recomienda Wi-Fi). El audio nunca se graba ni se guarda.",
     bani_length: "Largueza de las Bani",
     bani_length_alert_1:
       "A lo largo de los últimos siglos, ha habido muchos ”sampardhas” o ”jathas” diferentes que se han concebido a partir de los conceptos centrales de Sikhi y Gurmat.  Estos sampardhas a menudo tienen diferentes opiniones y pensamientos sobre algunos aspectos de la historia sikh, Gurbani y Rehat, pero aún caen colectivamente bajo el Khalsa Panth unido y, lo más importante, el Akaal Takht.El Akaal Takht es el más alto orden e institución a la que se adhieren todos los sikhs.",
